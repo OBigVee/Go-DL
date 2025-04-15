@@ -30,8 +30,8 @@ func (cl *ConvLayer) Forward(input [][][]float64) [][][]float64 {
 	inputW := len(input[0][0])
 
 	// Calculate output dimensions
-	outH := (inputH + 2*cl.Padding - kernelH)/cl.Stride + 1
-	outW := (inputW + 2*cl.Padding - kernelW)/cl.Stride + 1
+	outH := (inputH+2*cl.Padding-kernelH)/cl.Stride + 1
+	outW := (inputW+2*cl.Padding-kernelW)/cl.Stride + 1
 
 	output := make([][][]float64, numFilters)
 	for f := range output {
@@ -79,8 +79,8 @@ func (mpl *MaxPoolLayer) Forward(input [][][]float64) [][][]float64 {
 	h := len(input[0])
 	w := len(input[0][0])
 
-	outH := (h - mpl.PoolSize)/mpl.Stride + 1
-	outW := (w - mpl.PoolSize)/mpl.Stride + 1
+	outH := (h-mpl.PoolSize)/mpl.Stride + 1
+	outW := (w-mpl.PoolSize)/mpl.Stride + 1
 
 	output := make([][][]float64, channels)
 	for c := range output {
@@ -200,10 +200,10 @@ func randomArray(size int) []float64 {
 }
 
 func printDimensions(label string, x [][][]float64) {
-	fmt.Printf("%s: %d channels %dx%d\n", 
-		label, 
-		len(x), 
-		len(x[0]), 
+	fmt.Printf("%s: %d channels %dx%d\n",
+		label,
+		len(x),
+		len(x[0]),
 		len(x[0][0]))
 }
 
@@ -223,6 +223,7 @@ func main() {
 	// Convert to 28x28 grayscale
 	resized := image.NewGray(image.Rect(0, 0, 28, 28))
 	bounds := img.Bounds()
+	
 	for y := 0; y < 28; y++ {
 		for x := 0; x < 28; x++ {
 			// Simple resize by cropping/scaling
@@ -288,7 +289,7 @@ func main() {
 	}
 
 	denseOut := dense1.Forward(flatX)
-	
+
 	dense2 := &DenseLayer{
 		Weights: randomMatrix(10, 128),
 		Biases:  randomArray(10),
